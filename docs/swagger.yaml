@@ -1,0 +1,32 @@
+basePath: /
+definitions:
+  entities.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API para autenticação de usuários em GOlang
+  title: Login API
+  version: "1.0"
+paths:
+  /getUsers:
+    get:
+      responses: {}
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login Request
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/entities.LoginRequest'
+      responses: {}
+swagger: "2.0"
