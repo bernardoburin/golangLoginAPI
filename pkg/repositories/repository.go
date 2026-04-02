@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"database/sql"
 	"src/pkg/database"
 	"src/pkg/entities"
 )
@@ -27,22 +28,17 @@ func GetAllUsers() ([]entities.User, error) {
 	return users, nil
 }
 
-func login(username, password string) (bool, error) {
+func GetUser(username string) (entities.User, error) {
 	var db = database.CreateDatabaseConnection()
-	
-	var storedPassword string
-	err := db.QueryRow("SELECT password FROM users WHERE email = $1", username).Scan(&storedPassword)
+
+	var user entities.User
+	err := db.QueryRow("SELECT id, name, email, password FROM users WHERE name = $1", username).Scan(&user.ID, &user.Name, &user.Email, &user.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return false, nil
+			return entities.User{}, nil
 		}
-		return false, err
+		return entities.User{}, err
 	}
 	db.Close()
-	
-	if storedPassword != password {
-		return false, nil
-	}
-
-	return true, nil
+	return user, nil
 }
