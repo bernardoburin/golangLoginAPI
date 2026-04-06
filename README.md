@@ -75,8 +75,4 @@ POST	/login	Autentica um usuário via email e senha.
 
     [ ] Adicionar Hash de senha (bcrypt).
 
-    [ ] Criar testes unitários para os controllers.
-
     [ ] Dockerizar a aplicação.
-
-Feito com ❤️ por [Seu Nome/Github]

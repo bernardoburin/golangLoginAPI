@@ -7,6 +7,19 @@ definitions:
       password:
         type: string
     type: object
+  entities.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -14,9 +27,25 @@ info:
   title: Login API
   version: "1.0"
 paths:
+  /createUser:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
   /getUsers:
     get:
       responses: {}
+      security:
+      - ApiKeyAuth: []
   /login:
     post:
       consumes:
@@ -29,4 +58,9 @@ paths:
         schema:
           $ref: '#/definitions/entities.LoginRequest'
       responses: {}
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

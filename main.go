@@ -3,6 +3,9 @@
 //@version 1.0
 //@host localhost:8080
 //@BasePath /
+//@securityDefinitions.apikey ApiKeyAuth
+//@in header
+//@name Authorization
 
 package main
 
@@ -20,6 +23,7 @@ func main() {
 
 	app.GET("/getUsers", controller.GetAllUsers)
 	app.POST("/login", controller.Login)
+	app.POST("/createUser", controller.CreateUser)
 
 	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	app.Run("localhost:8080")
