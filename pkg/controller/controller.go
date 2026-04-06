@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"src/pkg/entities"
 	"src/pkg/helpers"
@@ -81,7 +80,7 @@ func Login(c *gin.Context) {
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
-	}, "user")
+	}, user.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -103,8 +102,6 @@ func CreateUser(c *gin.Context) {
 	var user entities.User
 	var token string = c.GetHeader("Authorization")
 	var role, _ = helpers.GetRole(token)
-	fmt.Println(role)
-	//fix role implementation
 
 	if role != "admin" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
