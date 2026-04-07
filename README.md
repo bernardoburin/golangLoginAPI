@@ -37,15 +37,8 @@ O projeto segue uma organização modular para facilitar a manutenção:
 
 2. Configuração do Banco de Dados
 
-Certifique-se de ter um banco de dados chamado golang e uma tabela users:
-SQL
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    password TEXT
-);
+Dentro de /scripts execute o comando: go run dbconfig.go
+Isso criará dentro do seu Postgres as tabelas necessárias. 
 
 3. Rodando a aplicação
 
