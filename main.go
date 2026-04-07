@@ -27,6 +27,7 @@ func main() {
 
 	app.POST("/createOrder", controller.CreateOrder)
 	app.GET("/getOrders", controller.GetMyOrders)
+	app.DELETE("/deleteOrder/:id", controller.DeleteOrder)
 
 	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	app.Run("localhost:8080")

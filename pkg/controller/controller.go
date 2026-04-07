@@ -5,6 +5,7 @@ import (
 	"src/pkg/entities"
 	"src/pkg/helpers"
 	"src/pkg/repositories"
+	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -165,4 +166,33 @@ func GetMyOrders(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, orders)
+}
+
+// @Router /deleteOrder/{id} [delete]
+// @Security ApiKeyAuth
+func DeleteOrder(c *gin.Context) {
+	token := c.GetHeader("Authorization")
+
+	// Validação de permissão: Apenas admin pode deletar
+	role, err := helpers.GetRole(token)
+	if err != nil || role != "admin" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Acesso negado: apenas administradores podem apagar pedidos"})
+		return
+	}
+
+	// Captura o ID da URL (ex: /deleteOrder/5)
+	idParam := c.Param("id")
+	orderID, err := strconv.Atoi(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID do pedido inválido"})
+		return
+	}
+
+	// Chama o repositório para deletar
+	if err := repositories.DeleteOrder(orderID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao deletar pedido: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Pedido " + idParam + " removido com sucesso!"})
 }

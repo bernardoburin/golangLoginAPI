@@ -83,3 +83,11 @@ func GetOrdersByUserID(userID int) ([]entities.Order, error) {
 	}
 	return orders, nil
 }
+
+func DeleteOrder(orderID int) error {
+	db := database.CreateDatabaseConnection()
+	defer db.Close()
+
+	_, err := db.Exec("DELETE FROM orders WHERE id = $1", orderID)
+	return err
+}
