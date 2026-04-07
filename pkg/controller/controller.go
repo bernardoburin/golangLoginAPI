@@ -6,6 +6,7 @@ import (
 	"src/pkg/helpers"
 	"src/pkg/repositories"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -119,4 +120,49 @@ func CreateUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully", "data": user})
+}
+
+// @Router /createOrder [post]
+// @Security ApiKeyAuth
+func CreateOrder(c *gin.Context) {
+	var order entities.Order
+	token := c.GetHeader("Authorization")
+
+	// Validação básica de token já existente no seu helpers
+	_, err := helpers.ValidateJWT(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	if err := c.ShouldBindJSON(&order); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := repositories.CreateOrder(order); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"message": "Order created successfully"})
+}
+
+// @Router /getOrders [get]
+// @Security ApiKeyAuth
+func GetMyOrders(c *gin.Context) {
+	token := c.GetHeader("Authorization")
+
+	// Extraindo o ID do usuário do Token (baseado no seu JWTgenerator.go)
+	t, _ := helpers.ValidateJWT(token)
+	claims := t.Claims.(jwt.MapClaims)
+	userID := int(claims["id"].(float64))
+
+	orders, err := repositories.GetOrdersByUserID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, orders)
 }

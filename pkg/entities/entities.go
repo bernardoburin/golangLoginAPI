@@ -19,3 +19,11 @@ type UserDTO struct {
 	Email string `json:"email"`
 	Role  string `json:"role"`
 }
+
+type Order struct {
+	ID          int     `json:"id"`
+	Description string  `json:"description"`
+	Amount      float64 `json:"amount"`
+	CreatedAt   string  `json:"created_at"`
+	UserID      int     `json:"user_id"`
+}

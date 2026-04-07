@@ -25,6 +25,9 @@ func main() {
 	app.POST("/login", controller.Login)
 	app.POST("/createUser", controller.CreateUser)
 
+	app.POST("/createOrder", controller.CreateOrder)
+	app.GET("/getOrders", controller.GetMyOrders)
+
 	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	app.Run("localhost:8080")
 
