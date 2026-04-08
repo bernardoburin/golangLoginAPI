@@ -9,6 +9,30 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
+        "/createOrder": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Order",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.Order"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/createUser": {
             "post": {
                 "security": [
@@ -28,6 +52,26 @@
                         "schema": {
                             "$ref": "#/definitions/entities.User"
                         }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/deleteOrder/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/getOrders": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
                     }
                 ],
                 "responses": {}
@@ -72,6 +116,26 @@
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "entities.Order": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

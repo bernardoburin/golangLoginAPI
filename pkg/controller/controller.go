@@ -124,6 +124,8 @@ func CreateUser(c *gin.Context) {
 }
 
 // @Router /createOrder [post]
+// @Accept json
+// @Param order body entities.Order true "Order"
 // @Security ApiKeyAuth
 func CreateOrder(c *gin.Context) {
 	var order entities.Order

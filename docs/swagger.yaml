@@ -7,6 +7,19 @@ definitions:
       password:
         type: string
     type: object
+  entities.Order:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
   entities.User:
     properties:
       email:
@@ -27,6 +40,20 @@ info:
   title: Login API
   version: "1.0"
 paths:
+  /createOrder:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Order'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
   /createUser:
     post:
       consumes:
@@ -38,6 +65,16 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/entities.User'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+  /deleteOrder/{id}:
+    delete:
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+  /getOrders:
+    get:
       responses: {}
       security:
       - ApiKeyAuth: []
